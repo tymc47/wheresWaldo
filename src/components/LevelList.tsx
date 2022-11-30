@@ -1,8 +1,8 @@
 import { Box } from "@mui/material";
-import levelEntries from "../data";
+import { LevelObj } from "../types";
 import LevelCard from "./LevelCard";
 
-const LevelList = () => {
+const LevelList = ({ levels }: { levels: LevelObj[] }) => {
   return (
     <Box
       sx={{
@@ -15,7 +15,7 @@ const LevelList = () => {
         backgroundColor: "secondary.main",
       }}
     >
-      {levelEntries.map((level) => (
+      {levels.map((level) => (
         <LevelCard level={level} key={level.name} />
       ))}
     </Box>

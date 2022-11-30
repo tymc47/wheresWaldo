@@ -1,11 +1,30 @@
-import { Box, AppBar, Toolbar, IconButton, Tooltip } from "@mui/material";
+import {
+  Box,
+  AppBar,
+  Toolbar,
+  IconButton,
+  Tooltip,
+  Button,
+} from "@mui/material";
 import LeaderboardIcon from "@mui/icons-material/Leaderboard";
 import InfoIcon from "@mui/icons-material/Info";
+import HomeIcon from "@mui/icons-material/Home";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import Logo from "../assets/logo/logo.svg";
 import Waldo_Logo from "../assets/logo/waldo-logo.svg";
+import { Link } from "react-router-dom";
+import Timer from "./Timer";
+import CharacterIcon from "./CharacterIcon";
+import { characterName, LevelObj } from "../types";
 
-const Navbar = () => {
+interface NavbarProps {
+  currentLevel: LevelObj | null;
+  gameStart: boolean;
+  found: characterName[];
+  startGame: () => void;
+}
+
+const Navbar = ({ currentLevel, gameStart, startGame, found }: NavbarProps) => {
   return (
     <AppBar position="static">
       <Toolbar
@@ -16,7 +35,11 @@ const Navbar = () => {
           justifyContent: "space-between",
         }}
       >
-        <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Box
+          sx={{ display: "flex", alignItems: "center" }}
+          component={Link}
+          to="/"
+        >
           <Box
             component="img"
             sx={{
@@ -34,19 +57,49 @@ const Navbar = () => {
             src={Logo}
           />
         </Box>
+        {!currentLevel ? null : (
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              columnGap: "16px",
+            }}
+          >
+            <CharacterIcon level={currentLevel} found={found} />
+            <Timer gameStart={gameStart} />
+            <Button color="secondary" variant="contained" onClick={startGame}>
+              Start!
+            </Button>
+          </Box>
+        )}
         <Box>
+          <Tooltip title="Home">
+            <IconButton color="info" component={Link} to="/">
+              <HomeIcon sx={{ fontSize: 32 }} />
+            </IconButton>
+          </Tooltip>
           <Tooltip title="Leaderboard">
-            <IconButton>
+            <IconButton color="info" component={Link} to="/leaderboard">
               <LeaderboardIcon sx={{ fontSize: 32 }} />
             </IconButton>
           </Tooltip>
-          <Tooltip title="How to Play">
-            <IconButton>
+          <Tooltip title="About">
+            <IconButton
+              component="a"
+              target="_blank"
+              href="https://en.wikipedia.org/wiki/Where's_Wally%3F"
+              color="info"
+            >
               <InfoIcon sx={{ fontSize: 32 }} />
             </IconButton>
           </Tooltip>
           <Tooltip title="Github">
-            <IconButton>
+            <IconButton
+              component="a"
+              target="_blank"
+              href="https://github.com/tymc47/whereswaldo"
+              color="info"
+            >
               <GitHubIcon sx={{ fontSize: 32 }} />
             </IconButton>
           </Tooltip>
