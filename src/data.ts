@@ -3,15 +3,15 @@ import { LevelObj } from "./types";
 const levelEntries: LevelObj[] = [
   {
     name: "beach",
-    character: ["waldo", "wilma", "wizard", "woof", "odlaw"],
+    character: ["waldo", "wilma", "wizard", "odlaw"],
   },
   {
     name: "space",
-    character: ["waldo", "wilma", "wizard", "woof", "odlaw"],
+    character: ["waldo", "wilma", "wizard", "odlaw"],
   },
   {
     name: "snow",
-    character: ["waldo", "wilma", "wizard", "woof", "odlaw"],
+    character: ["waldo", "wilma", "wizard", "odlaw"],
   },
   {
     name: "track",
@@ -19,7 +19,7 @@ const levelEntries: LevelObj[] = [
   },
   {
     name: "hollywood",
-    character: ["waldo", "wilma", "wizard", "woof", "odlaw"],
+    character: ["waldo", "wilma", "odlaw"],
   },
 ];
 
