@@ -5,7 +5,7 @@ import woof from "./character/woof.svg";
 import odlaw from "./character/odlaw.svg";
 import { characterName } from "../types";
 
-export const characterIcon: Record<characterName, string> = {
+export const characterImg: Record<characterName, string> = {
   waldo,
   wilma,
   woof,
