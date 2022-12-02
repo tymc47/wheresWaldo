@@ -1,5 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+#database controll
+/src/services/temporary.ts
+
 # vscode
 .vscode
 # dependencies
