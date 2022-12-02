@@ -1,4 +1,4 @@
-import { coordinates } from "./types";
+import { coordinates, score } from "./types";
 
 export const validateGuess = (
   guess: coordinates,
@@ -10,14 +10,6 @@ export const validateGuess = (
   const topBound = guess.Y - deviation;
   const bottomBound = guess.Y + deviation;
 
-  //   console.log("guess", guess);
-  //   console.log("actual location", location);
-  //   console.log(leftBound, rightBound, topBound, bottomBound);
-  //   console.log(location.X > leftBound);
-  //   console.log(location.X < rightBound);
-  //   console.log(location.Y > bottomBound);
-  //   console.log(location.Y < topBound);
-
   if (
     location.X > leftBound &&
     location.X < rightBound &&
@@ -26,4 +18,25 @@ export const validateGuess = (
   )
     return true;
   return false;
+};
+
+export const convertTime = (time: number): string => {
+  return `${("0" + Math.floor((time / 60000) % 60)).slice(-2)}:${(
+    "0" + Math.floor((time / 1000) % 60)
+  ).slice(-2)}:${("0" + ((time / 10) % 100)).slice(-2)}`;
+};
+
+export const getDate = (): string => {
+  const today = new Date();
+  const dd = String(today.getDate()).padStart(2, "0");
+  const mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+  const yyyy = today.getFullYear();
+
+  return yyyy + "-" + mm + "-" + dd;
+};
+
+export const compareScore = (a: score, b: score): number => {
+  if (a.time > b.time) return 1;
+  else if (a.time < b.time) return -1;
+  else return 0;
 };
