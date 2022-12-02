@@ -1,26 +1,30 @@
 import { Typography, Box } from "@mui/material";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { convertTime } from "../utils";
 
-const Timer = ({ gameStart }: { gameStart: boolean }) => {
+interface TimerProps {
+  gameStart: boolean;
+  setGameTime: React.Dispatch<React.SetStateAction<number>>;
+}
+
+const Timer = ({ gameStart, setGameTime }: TimerProps) => {
   const [time, setTime] = useState<number>(0);
 
   useEffect(() => {
     let interval: ReturnType<typeof setInterval>;
     if (gameStart) {
       interval = setInterval(() => {
-        setTime((prevTime) => prevTime + 10);
+        setTime((prev) => prev + 10);
       }, 10);
+    } else {
+      setGameTime(time);
     }
     return () => clearInterval(interval);
   }, [gameStart]);
 
   return (
     <Box sx={{ minWidth: "100px" }}>
-      <Typography variant="h6">
-        {`${("0" + Math.floor((time / 60000) % 60)).slice(-2)}:
-        ${("0" + Math.floor((time / 1000) % 60)).slice(-2)}:
-        ${("0" + ((time / 10) % 100)).slice(-2)}`}
-      </Typography>
+      <Typography variant="h6">{convertTime(time)}</Typography>
     </Box>
   );
 };
