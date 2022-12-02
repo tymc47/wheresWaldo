@@ -7,7 +7,6 @@ interface CharacterIconProps {
   found?: CharacterLocation[];
 }
 const CharacterIcon = ({ level, found }: CharacterIconProps) => {
-  console.log(found);
   return (
     <Box
       sx={{
