@@ -1,10 +1,10 @@
 import { Box, Icon } from "@mui/material";
 import { characterImg } from "../assets/characterImg";
-import { characterName, LevelObj } from "../types";
+import { CharacterLocation, LevelObj } from "../types";
 
 interface CharacterIconProps {
   level: LevelObj;
-  found?: characterName[];
+  found?: CharacterLocation[];
 }
 const CharacterIcon = ({ level, found }: CharacterIconProps) => {
   console.log(found);
@@ -13,13 +13,19 @@ const CharacterIcon = ({ level, found }: CharacterIconProps) => {
       sx={{
         display: "flex",
         alignItems: "center",
+        justifyContent: "flex-end",
       }}
     >
       {level.character.map((name) => (
         <Icon
           key={name}
-          fontSize="large"
-          sx={{ mx: "4px", opacity: found?.includes(name) ? 0.4 : 1 }}
+          sx={{
+            fontSize: "48px",
+            mx: "4px",
+            opacity: found?.some((location) => location.name === name)
+              ? 0.4
+              : 1,
+          }}
         >
           <img src={characterImg[name]}></img>
         </Icon>
