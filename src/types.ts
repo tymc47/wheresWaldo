@@ -5,3 +5,13 @@ export interface LevelObj {
   name: levelName;
   character: characterName[];
 }
+
+export interface coordinates {
+  X: number;
+  Y: number;
+}
+
+export interface CharacterLocation {
+  name: characterName;
+  coordinates: coordinates;
+}
