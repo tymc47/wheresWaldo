@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, CssBaseline } from "@mui/material";
+import { Box, Button, CssBaseline } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Navbar from "./components/Navbar";
 import LevelList from "./components/LevelList";
@@ -8,6 +8,9 @@ import Playground from "./components/Playground";
 import { CharacterLocation, coordinates, LevelObj } from "./types";
 import databaseService from "./services/database";
 import { validateGuess } from "./utils";
+import CharacterIcon from "./components/CharacterIcon";
+import Timer from "./components/Timer";
+import Leaderboard from "./components/Leaderboard";
 
 const theme = createTheme({
   palette: {
@@ -30,6 +33,7 @@ const theme = createTheme({
 function App() {
   const navigate = useNavigate();
   const [gameStart, setGameStart] = useState<boolean>(false);
+  const [gameTime, setGameTime] = useState<number>(0);
   const [currentLevel, setCurrentLevel] = useState<LevelObj | null>(null);
   const [locationStrike, setLocationStrike] = useState<CharacterLocation[]>([]);
   const [levels, setLevels] = useState<LevelObj[]>([]);
@@ -78,6 +82,8 @@ function App() {
     } else {
       setLocationStrike([]);
       setCurrentLevel(null);
+      setGameTime(0);
+      setGameStart(false);
     }
   }, [match]);
 
@@ -86,10 +92,27 @@ function App() {
       <Box sx={{ display: "flex", flexDirection: "column", height: "100vh" }}>
         <CssBaseline />
         <Navbar
-          currentLevel={currentLevel}
-          gameStart={gameStart}
-          startGame={startGame}
-          found={locationStrike}
+          icon={
+            currentLevel ? (
+              <CharacterIcon level={currentLevel} found={locationStrike} />
+            ) : null
+          }
+          timer={
+            currentLevel ? (
+              <Timer gameStart={gameStart} setGameTime={setGameTime} />
+            ) : null
+          }
+          button={
+            currentLevel ? (
+              <Button
+                color={gameStart ? "info" : "secondary"}
+                variant="contained"
+                onClick={startGame}
+              >
+                {gameStart ? "Started!" : "Start!"}
+              </Button>
+            ) : null
+          }
         />
         <Routes>
           <Route
@@ -100,8 +123,13 @@ function App() {
                 gameStart={gameStart}
                 found={locationStrike}
                 handleGuess={handleGuess}
+                finishTime={gameTime}
               />
             }
+          />
+          <Route
+            path="/leaderboard/*"
+            element={<Leaderboard levels={levels} />}
           />
           <Route path="/" element={<LevelList levels={levels} />} />
         </Routes>
