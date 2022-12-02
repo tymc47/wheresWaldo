@@ -43,7 +43,7 @@ const getLeaderboard = async (levelName: levelName): Promise<score[]> => {
   let result: score[] = [];
   const snapShot = await getDoc(doc(db, "leaderboard", levelName));
   if (snapShot.exists()) result = snapShot.data().scores;
-  return result;
+  return result || [];
 };
 
 const addScore = async (levelName: levelName, newScore: score) => {
