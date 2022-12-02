@@ -3,10 +3,11 @@ import { Box, CssBaseline } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Navbar from "./components/Navbar";
 import LevelList from "./components/LevelList";
-import { Routes, Route, useMatch } from "react-router-dom";
+import { Routes, Route, useMatch, useNavigate } from "react-router-dom";
 import Playground from "./components/Playground";
-import { characterName, LevelObj } from "./types";
-import levelEntries from "./data";
+import { CharacterLocation, coordinates, LevelObj } from "./types";
+import databaseService from "./services/database";
+import { validateGuess } from "./utils";
 
 const theme = createTheme({
   palette: {
@@ -27,22 +28,42 @@ const theme = createTheme({
 });
 
 function App() {
+  const navigate = useNavigate();
   const [gameStart, setGameStart] = useState<boolean>(false);
   const [currentLevel, setCurrentLevel] = useState<LevelObj | null>(null);
-  const [characterStrike, setCharacterStrike] = useState<characterName[]>([]);
-  const levels = levelEntries;
-  const match = useMatch("/playground/:name");
+  const [locationStrike, setLocationStrike] = useState<CharacterLocation[]>([]);
+  const [levels, setLevels] = useState<LevelObj[]>([]);
+  const match = useMatch<"name", string>("/playground/:name");
 
   const startGame = () => setGameStart(true);
 
-  const handleStrike = (name: characterName) => {
-    if (characterStrike.includes(name)) return;
-    const found = characterStrike.concat(name);
-    if (found) setCharacterStrike(found);
+  const handleStrike = (location: CharacterLocation) => {
+    if (locationStrike.some((loco) => loco.name === location.name)) return;
+    const found = locationStrike.concat(location);
+    if (found) setLocationStrike(found);
     if (found && found.length === currentLevel?.character.length) {
       setGameStart(false);
     }
   };
+
+  const handleGuess = async (guess: coordinates) => {
+    if (!currentLevel) return;
+
+    const locations = await databaseService.getCharacterLocations(
+      currentLevel.name
+    );
+
+    if (!locations) return;
+
+    locations.forEach((location) => {
+      if (locationStrike.some((x) => x.name === location.name)) return;
+      if (validateGuess(guess, location.coordinates)) handleStrike(location);
+    });
+  };
+
+  useEffect(() => {
+    databaseService.getlevelsData().then((data) => setLevels(data));
+  }, []);
 
   useEffect(() => {
     if (match) {
@@ -51,8 +72,13 @@ function App() {
       );
       if (level) {
         setCurrentLevel(level);
+      } else {
+        navigate("/");
       }
-    } else setCurrentLevel(null);
+    } else {
+      setLocationStrike([]);
+      setCurrentLevel(null);
+    }
   }, [match]);
 
   return (
@@ -63,7 +89,7 @@ function App() {
           currentLevel={currentLevel}
           gameStart={gameStart}
           startGame={startGame}
-          found={characterStrike}
+          found={locationStrike}
         />
         <Routes>
           <Route
@@ -72,7 +98,8 @@ function App() {
               <Playground
                 level={currentLevel}
                 gameStart={gameStart}
-                handleStrike={handleStrike}
+                found={locationStrike}
+                handleGuess={handleGuess}
               />
             }
           />
