@@ -1,5 +1,14 @@
-import { collection, getDocs, query, where } from "firebase/firestore";
-import { CharacterLocation, levelName, LevelObj } from "../types";
+import {
+  arrayUnion,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
+import { CharacterLocation, levelName, LevelObj, score } from "../types";
 import { db } from "./firebase";
 
 const getlevelsData = async (): Promise<LevelObj[]> => {
@@ -30,6 +39,25 @@ const getCharacterLocations = async (
   return locations;
 };
 
-const databaseService = { getlevelsData, getCharacterLocations };
+const getLeaderboard = async (levelName: levelName): Promise<score[]> => {
+  let result: score[] = [];
+  const snapShot = await getDoc(doc(db, "leaderboard", levelName));
+  if (snapShot.exists()) result = snapShot.data().scores;
+  return result;
+};
+
+const addScore = async (levelName: levelName, newScore: score) => {
+  const ref = doc(db, "leaderboard", levelName);
+  await updateDoc(ref, {
+    scores: arrayUnion(newScore),
+  });
+};
+
+const databaseService = {
+  getlevelsData,
+  getCharacterLocations,
+  getLeaderboard,
+  addScore,
+};
 
 export default databaseService;
