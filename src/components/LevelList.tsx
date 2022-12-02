@@ -15,9 +15,11 @@ const LevelList = ({ levels }: { levels: LevelObj[] }) => {
         backgroundColor: "secondary.main",
       }}
     >
-      {levels.map((level) => (
-        <LevelCard level={level} key={level.name} />
-      ))}
+      {[...levels]
+        .sort((a, b) => a.character.length - b.character.length)
+        .map((level) => (
+          <LevelCard level={level} key={level.name} />
+        ))}
     </Box>
   );
 };
