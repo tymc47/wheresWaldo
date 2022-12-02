@@ -32,9 +32,7 @@ const Leaderboard = ({ levels }: { levels: LevelObj[] }) => {
     if (match) {
       const levelName = match.params.levelName;
       databaseService.getLeaderboard(levelName as levelName).then((res) => {
-        console.log("result", res);
         const sorted = [...res].sort((a, b) => compareScore(a, b));
-        console.log("sorted", sorted);
         setData(sorted);
       });
     } else navigate(`/leaderboard/${levels[0].name}`);
