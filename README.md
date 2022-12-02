@@ -12,6 +12,11 @@ The aim of this project is to practice using Typescript and BaaS to create a pho
 - [bad-words](https://npm.io/package/bad-words)
 - Typescript
 
+### Future Improvement
+- image loading method
+- better state management with Context/Redux
+- responsive design
+
 ### Credits
 All rights to all pictures, icons and names on this website belong to the original publishers of Where's Waldo (Where's Wally). I only used them to build a website for study purpose. This page is not being used commercially. Please let me know if you have any issues with the content of the page and I will take it down immediately.
 
