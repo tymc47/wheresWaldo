@@ -4,6 +4,7 @@ import {
   CardActionArea,
   CardMedia,
   Typography,
+  Grid,
 } from "@mui/material";
 import { LevelObj } from "../types";
 import { Link } from "react-router-dom";
@@ -19,7 +20,7 @@ const LevelCard = ({ level }: LevelProps) => {
     <Card
       sx={{
         width: "70vw",
-        height: "10vh",
+        height: "12vh",
         borderRadius: 50,
         ":hover": { boxShadow: 15 },
       }}
@@ -29,22 +30,39 @@ const LevelCard = ({ level }: LevelProps) => {
           display: "flex",
           alignItems: "center",
           width: "70vw",
-          pl: "40px",
-          height: "10vh",
+          height: "12vh",
         }}
         to={`/playground/${level.name}`}
         component={Link}
       >
-        <Box sx={{ flex: 1, marginRight: "5vw" }}>
-          <Typography variant="h6">{level.name.toUpperCase()}</Typography>
-        </Box>
-        <CharacterIcon level={level} />
-        <CardMedia
-          component="img"
-          image={thumbnail[level.name]}
-          alt={level.name}
-          sx={{ width: "50%", objectFit: "contain", ml: "2vw" }}
-        />
+        <Grid container sx={{ maxHeight: "12vh" }} alignItems="center">
+          <Grid
+            item
+            lg={3}
+            md={3}
+            xs={3}
+            alignItems="center"
+            sx={{ pl: "2vw" }}
+          >
+            <Box sx={{ marginRight: "5vw" }}>
+              <Typography variant="h6">{level.name.toUpperCase()}</Typography>
+            </Box>
+          </Grid>
+          <Grid item lg={4} md={5} xs={5} sx={{ pr: "16px" }}>
+            <CharacterIcon level={level} />
+          </Grid>
+          <Grid item lg={5} md={4} xs={4}>
+            <CardMedia
+              component="img"
+              image={thumbnail[level.name]}
+              alt={level.name}
+              sx={{
+                height: "12vh",
+                objectFit: "cover",
+              }}
+            />
+          </Grid>
+        </Grid>
       </CardActionArea>
     </Card>
   );
