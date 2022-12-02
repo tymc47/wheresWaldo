@@ -15,18 +15,18 @@ import Waldo_Logo from "../assets/logo/waldo-logo.svg";
 import { Link } from "react-router-dom";
 import Timer from "./Timer";
 import CharacterIcon from "./CharacterIcon";
-import { characterName, LevelObj } from "../types";
+import { CharacterLocation, LevelObj } from "../types";
 
 interface NavbarProps {
   currentLevel: LevelObj | null;
   gameStart: boolean;
-  found: characterName[];
+  found: CharacterLocation[];
   startGame: () => void;
 }
 
 const Navbar = ({ currentLevel, gameStart, startGame, found }: NavbarProps) => {
   return (
-    <AppBar position="static">
+    <AppBar position="sticky">
       <Toolbar
         sx={{
           height: 80,
@@ -67,9 +67,15 @@ const Navbar = ({ currentLevel, gameStart, startGame, found }: NavbarProps) => {
           >
             <CharacterIcon level={currentLevel} found={found} />
             <Timer gameStart={gameStart} />
-            <Button color="secondary" variant="contained" onClick={startGame}>
-              Start!
-            </Button>
+            {gameStart ? (
+              <Button color="info" variant="contained" onClick={startGame}>
+                Started!
+              </Button>
+            ) : (
+              <Button color="secondary" variant="contained" onClick={startGame}>
+                Start!
+              </Button>
+            )}
           </Box>
         )}
         <Box>
