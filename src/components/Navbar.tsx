@@ -1,11 +1,4 @@
-import {
-  Box,
-  AppBar,
-  Toolbar,
-  IconButton,
-  Tooltip,
-  Button,
-} from "@mui/material";
+import { Box, AppBar, Toolbar, IconButton, Tooltip } from "@mui/material";
 import LeaderboardIcon from "@mui/icons-material/Leaderboard";
 import InfoIcon from "@mui/icons-material/Info";
 import HomeIcon from "@mui/icons-material/Home";
@@ -13,18 +6,14 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 import Logo from "../assets/logo/logo.svg";
 import Waldo_Logo from "../assets/logo/waldo-logo.svg";
 import { Link } from "react-router-dom";
-import Timer from "./Timer";
-import CharacterIcon from "./CharacterIcon";
-import { CharacterLocation, LevelObj } from "../types";
 
 interface NavbarProps {
-  currentLevel: LevelObj | null;
-  gameStart: boolean;
-  found: CharacterLocation[];
-  startGame: () => void;
+  icon: JSX.Element | null;
+  timer: JSX.Element | null;
+  button: JSX.Element | null;
 }
 
-const Navbar = ({ currentLevel, gameStart, startGame, found }: NavbarProps) => {
+const Navbar = ({ icon, timer, button }: NavbarProps) => {
   return (
     <AppBar position="sticky">
       <Toolbar
@@ -57,27 +46,17 @@ const Navbar = ({ currentLevel, gameStart, startGame, found }: NavbarProps) => {
             src={Logo}
           />
         </Box>
-        {!currentLevel ? null : (
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              columnGap: "16px",
-            }}
-          >
-            <CharacterIcon level={currentLevel} found={found} />
-            <Timer gameStart={gameStart} />
-            {gameStart ? (
-              <Button color="info" variant="contained" onClick={startGame}>
-                Started!
-              </Button>
-            ) : (
-              <Button color="secondary" variant="contained" onClick={startGame}>
-                Start!
-              </Button>
-            )}
-          </Box>
-        )}
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            columnGap: "16px",
+          }}
+        >
+          {icon}
+          {timer}
+          {button}
+        </Box>
         <Box>
           <Tooltip title="Home">
             <IconButton color="info" component={Link} to="/">
