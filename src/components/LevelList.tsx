@@ -6,6 +6,7 @@ const LevelList = ({ levels }: { levels: LevelObj[] }) => {
   return (
     <Box
       sx={{
+        flex: 1,
         display: "flex",
         flexDirection: "column",
         rowGap: "24px",

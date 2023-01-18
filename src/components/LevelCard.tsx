@@ -10,12 +10,15 @@ import { LevelObj } from "../types";
 import { Link } from "react-router-dom";
 import { thumbnail } from "../assets/thumbnail";
 import CharacterIcon from "./CharacterIcon";
+import { useScreen } from "../utils";
 
 interface LevelProps {
   level: LevelObj;
 }
 
 const LevelCard = ({ level }: LevelProps) => {
+  const { MScreen, SScreen } = useScreen();
+
   return (
     <Card
       sx={{
@@ -40,18 +43,22 @@ const LevelCard = ({ level }: LevelProps) => {
             item
             lg={3}
             md={3}
-            xs={3}
+            sm={3}
+            xs={4}
             alignItems="center"
             sx={{ pl: "2vw" }}
           >
             <Box sx={{ marginRight: "5vw" }}>
-              <Typography variant="h6">{level.name.toUpperCase()}</Typography>
+              <Typography variant={SScreen ? "h6" : "subtitle2"}>
+                {level.name.toUpperCase()}
+              </Typography>
             </Box>
           </Grid>
-          <Grid item lg={4} md={5} xs={5} sx={{ pr: "16px" }}>
-            <CharacterIcon level={level} />
+          <Grid item lg={4} md={5} sm={2} xs={2} sx={{ pr: "16px" }}>
+            {MScreen && <CharacterIcon level={level} />}
           </Grid>
-          <Grid item lg={5} md={4} xs={4}>
+
+          <Grid item lg={5} md={4} sm={7} xs={6}>
             <CardMedia
               component="img"
               image={thumbnail[level.name]}

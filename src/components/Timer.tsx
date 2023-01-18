@@ -1,6 +1,6 @@
 import { Typography, Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { convertTime } from "../utils";
+import { convertTime, useScreen } from "../utils";
 
 interface TimerProps {
   gameStart: boolean;
@@ -9,6 +9,7 @@ interface TimerProps {
 
 const Timer = ({ gameStart, setGameTime }: TimerProps) => {
   const [time, setTime] = useState<number>(0);
+  const SScreen = useScreen();
 
   useEffect(() => {
     let interval: ReturnType<typeof setInterval>;
@@ -23,8 +24,10 @@ const Timer = ({ gameStart, setGameTime }: TimerProps) => {
   }, [gameStart]);
 
   return (
-    <Box sx={{ minWidth: "100px" }}>
-      <Typography variant="h6">{convertTime(time)}</Typography>
+    <Box sx={{ minWidth: SScreen ? "100px" : "80px", textAlign: "center" }}>
+      <Typography variant={SScreen ? "h6" : "subtitle1"}>
+        {convertTime(time)}
+      </Typography>
     </Box>
   );
 };

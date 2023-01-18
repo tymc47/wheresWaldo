@@ -7,7 +7,7 @@ import { Routes, Route, useMatch, useNavigate } from "react-router-dom";
 import Playground from "./components/Playground";
 import { CharacterLocation, coordinates, LevelObj } from "./types";
 import databaseService from "./services/database";
-import { validateGuess } from "./utils";
+import { useScreen, validateGuess } from "./utils";
 import CharacterIcon from "./components/CharacterIcon";
 import Timer from "./components/Timer";
 import Leaderboard from "./components/Leaderboard";
@@ -38,8 +38,9 @@ function App() {
   const [locationStrike, setLocationStrike] = useState<CharacterLocation[]>([]);
   const [levels, setLevels] = useState<LevelObj[]>([]);
   const match = useMatch<"name", string>("/playground/:name");
+  const { SScreen } = useScreen();
 
-  const startGame = () => setGameStart(true);
+  const toggleGame = () => setGameStart((prev) => !prev);
 
   const handleStrike = (location: CharacterLocation) => {
     if (locationStrike.some((loco) => loco.name === location.name)) return;
@@ -89,7 +90,14 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={{ display: "flex", flexDirection: "column", height: "100vh" }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          minHeight: "100vh",
+          maxWidth: "100%",
+        }}
+      >
         <CssBaseline />
         <Navbar
           icon={
@@ -107,9 +115,10 @@ function App() {
               <Button
                 color={gameStart ? "info" : "secondary"}
                 variant="contained"
-                onClick={startGame}
+                onClick={toggleGame}
+                sx={SScreen ? null : { fontSize: "12px", px: "8px", py: "3px" }}
               >
-                {gameStart ? "Started!" : "Start!"}
+                {gameStart ? "Pause" : gameTime > 0 ? "Resume" : "Start!"}
               </Button>
             ) : null
           }

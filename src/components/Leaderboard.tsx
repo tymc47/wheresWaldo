@@ -17,12 +17,13 @@ import { Link, Route, Routes, useMatch, useNavigate } from "react-router-dom";
 import { thumbnail } from "../assets/thumbnail";
 import databaseService from "../services/database";
 import { levelName, LevelObj, score } from "../types";
-import { compareScore } from "../utils";
+import { compareScore, useScreen } from "../utils";
 
 const Leaderboard = ({ levels }: { levels: LevelObj[] }) => {
   const navigate = useNavigate();
   const [data, setData] = useState<score[]>([]);
   const match = useMatch<"levelName", string>("/leaderboard/:levelName");
+  const { MScreen, SScreen } = useScreen();
 
   useEffect(() => {
     if (!levels || levels.length === 0) navigate("/");
@@ -41,6 +42,7 @@ const Leaderboard = ({ levels }: { levels: LevelObj[] }) => {
   return (
     <Box
       sx={{
+        flex: 1,
         display: "flex",
         flexDirection: "column",
         rowGap: "2vh",
@@ -69,17 +71,19 @@ const Leaderboard = ({ levels }: { levels: LevelObj[] }) => {
             <CardActionArea to={`/leaderboard/${level.name}`} component={Link}>
               <CardMedia
                 component="img"
-                height="70%"
+                height={SScreen ? "70%" : "90px"}
                 image={thumbnail[level.name]}
                 alt={level.name}
               />
-              <Typography
-                sx={{ ml: "8px", my: "4px" }}
-                variant="h6"
-                component="div"
-              >
-                {level.name.toUpperCase()}
-              </Typography>
+              {SScreen && (
+                <Typography
+                  sx={{ ml: MScreen ? "8px" : "4px", my: "4px" }}
+                  variant={MScreen ? "h6" : "subtitle2"}
+                  component="div"
+                >
+                  {level.name.toUpperCase()}
+                </Typography>
+              )}
             </CardActionArea>
           </Card>
         ))}
@@ -92,7 +96,10 @@ const Leaderboard = ({ levels }: { levels: LevelObj[] }) => {
               component={Paper}
               sx={{ maxWidth: "100%", px: "2vw" }}
             >
-              <Table sx={{ minWidth: 650 }} aria-label="simple table">
+              <Table
+                sx={MScreen ? { minWidth: 650 } : null}
+                aria-label="simple table"
+              >
                 <colgroup>
                   <col style={{ width: "30%" }} />
                   <col style={{ width: "35%" }} />
