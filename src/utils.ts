@@ -1,3 +1,4 @@
+import { useMediaQuery } from "@mui/material";
 import { coordinates, score } from "./types";
 
 export const validateGuess = (
@@ -39,4 +40,16 @@ export const compareScore = (a: score, b: score): number => {
   if (a.time > b.time) return 1;
   else if (a.time < b.time) return -1;
   else return 0;
+};
+
+export const useScreen = () => {
+  const LScreen = useMediaQuery("(min-width:1200px)");
+  const MScreen = useMediaQuery("(min-width:900px)");
+  const SScreen = useMediaQuery("(min-width:600px)");
+
+  return {
+    LScreen,
+    MScreen,
+    SScreen,
+  };
 };
